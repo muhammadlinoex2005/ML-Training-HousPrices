@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Harga Rumah Jakarta Selatan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .prediction-result {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #28a745; /* Green for success, change if needed */
+        }
+        .error-message {
+            color: #dc3545; /* Red for errors */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Prediksi Harga Rumah</h1>
+        <form action="/" method="post">
+            <div class="form-group">
+                <label for="LT">Luas Tanah (LT) (m²):</label>
+                <input type="number" class="form-control" id="LT" name="LT" step="any" required>
+            </div>
+
+            <div class="form-group">
+                <label for="LB">Luas Bangunan (LB) (m²):</label>
+                <input type="number" class="form-control" id="LB" name="LB" step="any" required>
+            </div>
+
+            <div class="form-group">
+                <label for="JKT">Jumlah Kamar Tidur (JKT):</label>
+                <input type="number" class="form-control" id="JKT" name="JKT" required>
+            </div>
+
+            <div class="form-group">
+                <label for="JKM">Jumlah Kamar Mandi (JKM):</label>
+                <input type="number" class="form-control" id="JKM" name="JKM" required>
+            </div>
+
+            <div class="form-group">
+                <label for="GRS">Garasi (GRS):</label>
+                <select class="form-control" id="GRS" name="GRS">
+                    <option value="1">Ada</option>
+                    <option value="0">Tidak Ada</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">🏠 Prediksi Harga</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="prediction-result {% if 'Error' in prediction_text %}error-message{% endif %}">
+                {{ prediction_text }}
+            </div>
+        {% endif %}
+    </div>
+
+    </body>
+</html>
