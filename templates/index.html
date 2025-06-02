@@ -4,101 +4,433 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediksi Harga Rumah Jakarta Selatan</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f7f6;
+            --card-background-color: #ffffff;
+            --text-color: #34495e;
+            --light-text-color: #7f8c8d;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            line-height: 1.6;
         }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+        .container-wrapper {
             width: 100%;
-            max-width: 600px;
+            max-width: 750px;
+            margin-top: 30px;
+            margin-bottom: 30px;
         }
+
+        .main-container {
+            background-color: var(--card-background-color);
+            padding: 35px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 30px;
+            font-size: 2.2em;
         }
+        h1 i {
+            margin-right: 10px;
+        }
+
         .form-group label {
-            font-weight: bold;
-            color: #555;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-size: 0.95em;
         }
+
         .form-control {
-            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            height: auto; 
         }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
         }
-        .prediction-result {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            text-align: center;
+        
+        select.form-control {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        .btn-custom-primary {
+            background-color: var(--primary-color);
+            border: none;
+            color: white;
+            padding: 12px 15px;
             font-size: 1.1em;
-            color: #28a745; /* Green for success, change if needed */
+            font-weight: 500;
+            border-radius: 6px;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
         }
-        .error-message {
-            color: #dc3545; /* Red for errors */
+        .btn-custom-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
         }
+        .btn-custom-primary i {
+            margin-right: 8px;
+        }
+
+        .prediction-result-section,
+        .calculation-details-section,
+        .explanation-section { /* Added explanation-section styling */
+            margin-top: 30px;
+            padding: 25px;
+            background-color: var(--card-background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+        
+        .prediction-result-section h3,
+        .calculation-details-section h3,
+        .explanation-section h3 { /* Added explanation-section styling */
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+         .prediction-result-section h3 i,
+         .calculation-details-section h3 i,
+         .explanation-section h3 i { /* Added explanation-section styling */
+            margin-right: 10px;
+         }
+
+        .prediction-text-display {
+            padding: 15px;
+            background-color: #e6f7ff;
+            border: 1px solid #b3e0ff;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .prediction-text-display.success {
+            color: var(--secondary-color);
+            background-color: #e6ffed;
+            border-color: #b3ffc6;
+        }
+        .prediction-text-display.error {
+            color: #e74c3c;
+            background-color: #ffe6e6;
+            border-color: #ffb3b3;
+        }
+        
+        .formula-note {
+            font-size: 0.9em;
+            color: var(--light-text-color);
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .calculation-details-section table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        .calculation-details-section th, 
+        .calculation-details-section td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 0.95em;
+        }
+        .calculation-details-section th {
+            background-color: #e9f5ff;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .calculation-details-section tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .calculation-details-section p {
+            font-size: 0.95em;
+        }
+        .calculation-details-section strong {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .final-calculation-summary {
+            background-color: #e9f5ff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #b3d7ff;
+            font-weight: 500;
+        }
+        .final-calculation-summary strong {
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        /* Accordion Styling */
+        .explanation-section .card {
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .explanation-section .card-header {
+            background-color: #e9f5ff;
+            padding: 0;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 8px 8px 0 0;
+        }
+        .explanation-section .btn-link {
+            font-weight: 500;
+            color: var(--primary-color);
+            text-decoration: none;
+            width: 100%;
+            padding: 15px 20px; /* Increased padding */
+            font-size: 1.1em; /* Increased font size */
+        }
+        .explanation-section .btn-link:hover {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .explanation-section .btn-link i {
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+        .explanation-section .btn-link[aria-expanded="true"] i.fa-chevron-down {
+             transform: rotate(180deg);
+        }
+        .explanation-section .card-body {
+            padding: 20px;
+            font-size: 0.95em;
+            background-color: var(--card-background-color);
+            border-radius: 0 0 8px 8px;
+        }
+        .explanation-section .card-body p, 
+        .explanation-section .card-body ul {
+            margin-bottom: 10px;
+        }
+        .explanation-section .card-body ul {
+            padding-left: 20px;
+        }
+        .explanation-section .card-body strong {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .explanation-section .card-body code {
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #c7254e; /* Bootstrap's code color */
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📝 Prediksi Harga Rumah</h1>
-        <form action="/" method="post">
-            <div class="form-group">
-                <label for="LT">Luas Tanah (LT) (m²):</label>
-                <input type="number" class="form-control" id="LT" name="LT" step="any" required>
+    <div class="container-wrapper">
+        <div class="main-container">
+            <h1><i class="fas fa-home"></i>Prediksi Harga Rumah</h1>
+            <form action="/" method="post">
+                <div class="form-group">
+                    <label for="LT">Luas Tanah (LT) (m²):</label>
+                    <input type="number" class="form-control" id="LT" name="LT" step="any" required>
+                </div>
+                <div class="form-group">
+                    <label for="LB">Luas Bangunan (LB) (m²):</label>
+                    <input type="number" class="form-control" id="LB" name="LB" step="any" required>
+                </div>
+                <div class="form-group">
+                    <label for="JKT">Jumlah Kamar Tidur (JKT):</label>
+                    <input type="number" class="form-control" id="JKT" name="JKT" required>
+                </div>
+                <div class="form-group">
+                    <label for="JKM">Jumlah Kamar Mandi (JKM):</label>
+                    <input type="number" class="form-control" id="JKM" name="JKM" required>
+                </div>
+                <div class="form-group">
+                    <label for="GRS">Garasi (GRS):</label>
+                    <select class="form-control" id="GRS" name="GRS">
+                        <option value="1">Ada</option>
+                        <option value="0">Tidak Ada</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-custom-primary"><i class="fas fa-calculator"></i> Prediksi Harga</button>
+            </form>
+
+            {% if prediction_text %}
+                <div class="prediction-result-section">
+                     <h3><i class="fas fa-tags"></i>Hasil Prediksi</h3>
+                    <div class="prediction-text-display {% if 'Error' in prediction_text %}error{% else %}success{% endif %}">
+                        {{ prediction_text }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if calculation_details %}
+            <div class="calculation-details-section">
+                <h3><i class="fas fa-chart-line"></i>Rincian Kalkulasi Prediksi</h3>
+                <p class="formula-note">
+                    Model Regresi Linear memprediksi harga berdasarkan formula: <br>
+                    <strong>Harga = Intercept + Σ (Koefisien<sub>i</sub> * Nilai_Fitur_Scaled<sub>i</sub>)</strong>
+                    <br>
+                    Koefisien dan Intercept ini dipelajari oleh model dari dataset selama proses training. Input fitur diubah (di-scale) sebelum dimasukkan ke formula.
+                </p>
+                <p><strong>Intercept Model:</strong> {{ calculation_details.intercept }}</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fitur</th>
+                            <th>Input Mentah</th>
+                            <th>Nilai Setelah Scaling</th>
+                            <th>Koefisien Model</th>
+                            <th>Kontribusi ke Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for feature in calculation_details.features %}
+                        <tr>
+                            <td>{{ feature.name }}</td>
+                            <td>{{ feature.raw_value }}</td>
+                            <td>{{ feature.scaled_value }}</td>
+                            <td>{{ feature.coefficient }}</td>
+                            <td>{{ feature.contribution }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="final-calculation-summary">
+                    <p><strong>Perhitungan Akhir:</strong><br>
+                        Harga Prediksi = {{ calculation_details.intercept }} (Intercept)
+                        {% for feature in calculation_details.features %}
+                            {% if feature.contribution >= 0 %} + {% else %} - {% endif %} {{ feature.contribution | abs }}
+                        {% endfor %}
+                        <br>= <strong>Rp {{ calculation_details.calculated_prediction | round(2) | string | replace(',', '') | replace('.', ',') if calculation_details.calculated_prediction is not none else 'N/A' }}</strong>
+                         <br><em style="font-size:0.8em;">(Pembulatan dapat menyebabkan sedikit perbedaan dari prediksi utama di atas)</em>
+                    </p>
+                </div>
+                <p style="margin-top:15px; font-size:0.85em; text-align:center; color: var(--light-text-color);">
+                    <em>Catatan: "Nilai Setelah Scaling" adalah nilai fitur yang sebenarnya digunakan oleh model setelah melalui tahap preprocessing (standardization).</em>
+                </p>
             </div>
 
-            <div class="form-group">
-                <label for="LB">Luas Bangunan (LB) (m²):</label>
-                <input type="number" class="form-control" id="LB" name="LB" step="any" required>
+            <div class="explanation-section mt-4">
+                <h3><i class="fas fa-book-reader"></i>Penjelasan Model & Kalkulasi</h3>
+                <div class="accordion" id="explanationAccordion">
+                    <div class="card">
+                        <div class="card-header" id="headingEasy">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseEasy" aria-expanded="true" aria-controls="collapseEasy">
+                                    <span><i class="fas fa-smile"></i> Penjelasan Sederhana</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseEasy" class="collapse show" aria-labelledby="headingEasy" data-parent="#explanationAccordion">
+                            <div class="card-body">
+                                <p><strong>Apa yang dilakukan model ini?</strong></p>
+                                <p>Bayangkan model ini seperti seorang penilai harga rumah yang cerdas. Ia telah belajar dari banyak data rumah sebelumnya untuk menemukan pola antara fitur rumah (seperti luas tanah, luas bangunan, jumlah kamar) dan harganya.</p>
+                                
+                                <p><strong>Bagaimana cara memprediksi harga?</strong></p>
+                                <p>Model ini menggunakan formula matematika sederhana. Setiap fitur rumah yang dimasukkan memiliki "bobot" atau "pengaruh" (disebut koefisien) terhadap harga. Model akan:</p>
+                                <ul>
+                                    <li>Mengalikan setiap nilai fitur yang dimasukkan dengan bobotnya masing-masing.</li>
+                                    <li>Menjumlahkan semua hasil perkalian tersebut.</li>
+                                    <li>Menambahkan sebuah nilai awal (disebut intercept atau konstanta).</li>
+                                </ul>
+                                <p>Hasil akhirnya adalah prediksi harga rumah.</p>
+
+                                <p><strong>Mengapa input perlu di-scaling?</strong></p>
+                                <p>Sebelum dimasukkan ke rumus, nilai input disesuaikan terlebih dahulu (proses ini disebut scaling atau standardisasi). Ini dilakukan agar semua fitur diperlakukan secara adil oleh model, meskipun skala angkanya berbeda-beda (misalnya, luas tanah bisa ribuan, sementara jumlah kamar hanya satuan). Ini membantu model belajar lebih baik dan membuat prediksi yang lebih akurat.</p>
+                                <p>Singkatnya, model ini mengambil input, menyesuaikannya, lalu menggunakan rumus yang dipelajari dari data historis untuk menghitung prediksi harga.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTechnical">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left collapsed d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseTechnical" aria-expanded="false" aria-controls="collapseTechnical">
+                                    <span><i class="fas fa-microscope"></i> Penjelasan Teknis Detail</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTechnical" class="collapse" aria-labelledby="headingTechnical" data-parent="#explanationAccordion">
+                            <div class="card-body">
+                                <p><strong>Model yang Digunakan:</strong> Regresi Linear (Linear Regression)</p>
+                                <p><strong>Tujuan Model:</strong> Regresi linear bertujuan untuk memodelkan hubungan linear antara variabel independen (fitur-fitur rumah seperti LT, LB, JKT, JKM, GRS) dan variabel dependen (target, yaitu HARGA rumah).</p>
+                                
+                                <p><strong>Formula Matematis:</strong></p>
+                                <p>Prediksi harga (<code>Y</code>) dihitung menggunakan formula:
+                                <code>Y = β₀ + β₁X₁ + β₂X₂ + ... + βₙXₙ</code></p>
+                                <ul>
+                                    <li><code>Y</code>: Adalah nilai prediksi harga rumah.</li>
+                                    <li><code>β₀</code> (Beta Nol): Adalah <strong>Intercept</strong> (konstanta). Ini adalah nilai prediksi Y ketika semua nilai fitur (X₁ sampai Xₙ) adalah nol (setelah scaling).</li>
+                                    <li><code>β₁ ... βₙ</code> (Beta 1 sampai Beta n): Adalah <strong>Koefisien Regresi</strong> untuk masing-masing fitur. Setiap koefisien (misalnya, β₁) merepresentasikan perubahan rata-rata pada <code>Y</code> (harga) untuk setiap kenaikan satu unit pada fitur terkait (<code>X₁</code>), dengan asumsi fitur-fitur lainnya konstan. Penting dicatat bahwa interpretasi ini berlaku untuk nilai fitur yang telah di-scaled.</li>
+                                    <li><code>X₁ ... Xₙ</code>: Adalah nilai-nilai dari fitur independen (LT, LB, JKT, JKM, GRS) yang telah melalui proses **scaling**.</li>
+                                </ul>
+
+                                <p><strong>Penentuan Intercept (β₀) dan Koefisien (β₁ ... βₙ):</strong></p>
+                                <p>Nilai-nilai intercept dan koefisien ini tidak ditentukan secara manual, melainkan "dipelajari" atau "diestimasi" oleh model dari dataset training. Algoritma Regresi Linear (seperti Ordinary Least Squares - OLS) digunakan untuk menemukan nilai-nilai parameter (β) ini yang paling meminimalkan selisih (error) antara harga prediksi model dan harga aktual rumah dalam dataset training. File <code>model.pkl</code> menyimpan parameter-parameter yang telah dipelajari ini.</p>
+
+                                <p><strong>Peran Feature Scaling (StandardScaler):</strong></p>
+                                <p>Sebelum fitur-fitur dimasukkan ke dalam model regresi linear untuk training atau prediksi, fitur-fitur tersebut di-scaling menggunakan <code>StandardScaler</code>.</p>
+                                <ul>
+                                    <li><strong>Mengapa Scaling?</strong> Fitur-fitur seringkali memiliki skala dan satuan yang berbeda (misalnya, Luas Tanah dalam m² bisa bernilai ratusan atau ribuan, sedangkan Jumlah Kamar Tidur biasanya bernilai satuan). Tanpa scaling, fitur dengan skala yang lebih besar dapat mendominasi proses training model dan perhitungan koefisien, meskipun secara substantif mungkin tidak lebih penting. Scaling membantu menstandarkan rentang nilai fitur.</li>
+                                    <li><strong>Bagaimana StandardScaler Bekerja?</strong> StandardScaler mentransformasi setiap fitur sehingga memiliki rata-rata (mean) 0 dan standar deviasi (standard deviation) 1. Transformasi untuk setiap nilai fitur <code>x</code> adalah: <code>z = (x - μ) / σ</code>, di mana <code>μ</code> adalah rata-rata fitur dari data training dan <code>σ</code> adalah standar deviasi fitur dari data training.</li>
+                                    <li>Parameter <code>μ</code> dan <code>σ</code> untuk setiap fitur (yang dipelajari dari data training) disimpan dalam file <code>scaler.pkl</code>. Untuk data baru (input pengguna), scaler yang sama ini digunakan untuk mentransformasi input sebelum dimasukkan ke model.</li>
+                                </ul>
+                                
+                                <p><strong>Proses Prediksi dalam Aplikasi Ini:</strong></p>
+                                <ol>
+                                    <li>Pengguna memasukkan nilai mentah untuk fitur-fitur rumah.</li>
+                                    <li>Nilai-nilai mentah ini kemudian ditransformasi (di-scale) menggunakan <code>StandardScaler</code> yang telah di-load (dari <code>scaler.pkl</code>), yang menggunakan parameter mean dan standard deviation dari data training asli.</li>
+                                    <li>Nilai-nilai fitur yang telah di-scale ini kemudian dimasukkan ke dalam formula regresi linear bersama dengan intercept dan koefisien yang telah dipelajari (dari <code>model.pkl</code>).</li>
+                                    <li>Hasilnya adalah prediksi harga rumah.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {% endif %}
 
-            <div class="form-group">
-                <label for="JKT">Jumlah Kamar Tidur (JKT):</label>
-                <input type="number" class="form-control" id="JKT" name="JKT" required>
-            </div>
-
-            <div class="form-group">
-                <label for="JKM">Jumlah Kamar Mandi (JKM):</label>
-                <input type="number" class="form-control" id="JKM" name="JKM" required>
-            </div>
-
-            <div class="form-group">
-                <label for="GRS">Garasi (GRS):</label>
-                <select class="form-control" id="GRS" name="GRS">
-                    <option value="1">Ada</option>
-                    <option value="0">Tidak Ada</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-primary">🏠 Prediksi Harga</button>
-        </form>
-
-        {% if prediction_text %}
-            <div class="prediction-result {% if 'Error' in prediction_text %}error-message{% endif %}">
-                {{ prediction_text }}
-            </div>
-        {% endif %}
-    </div>
-
-    </body>
+        </div> </div> <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
