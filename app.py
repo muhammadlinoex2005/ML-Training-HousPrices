@@ -2,13 +2,12 @@ from flask import Flask, request, render_template
 import pickle
 import numpy as np
 import pandas as pd
-import os # Ensures os module is imported
+import os
 
 # Initialize the Flask application
 app = Flask(__name__)
 
 # --- Get the directory where this script (app.py) is located ---
-# This makes the paths to model.pkl and scaler.pkl relative to app.py's location
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # --- Construct the full paths to the .pkl files ---
@@ -21,16 +20,13 @@ try:
         model = pickle.load(model_file)
     with open(scaler_path, 'rb') as scaler_file:
         scaler = pickle.load(scaler_file)
-    # Optional: print a success message to the console during development
     print(f"SUCCESS: Loaded model from {model_path}")
     print(f"SUCCESS: Loaded scaler from {scaler_path}")
 
 except FileNotFoundError:
-    # Updated error message to show the paths that were checked
     print(f"Error: model.pkl or scaler.pkl not found.")
     print(f"Attempted to load model from: {model_path}")
     print(f"Attempted to load scaler from: {scaler_path}")
-    print(f"Please ensure 'model.pkl' and 'scaler.pkl' are in the same directory as 'app.py': {script_dir}")
     model = None
     scaler = None
 except Exception as e:
@@ -38,51 +34,73 @@ except Exception as e:
     model = None
     scaler = None
 
-# Define the order of features your model expects
-# This MUST match the order used during training in your Colab notebook
-# Based on your script, it's likely: ['LT', 'LB', 'JKT', 'JKM', 'GRS']
 EXPECTED_FEATURE_ORDER = ['LT', 'LB', 'JKT', 'JKM', 'GRS']
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     prediction_text = None
+    calculation_details = None # Initialize calculation_details
+
     if request.method == 'POST':
         if model is None or scaler is None:
-            # This message is shown on the webpage
             prediction_text = "Error: Model or scaler not loaded. Please check server logs for details."
-            return render_template('index.html', prediction_text=prediction_text)
+            return render_template('index.html', prediction_text=prediction_text, calculation_details=calculation_details)
         try:
             # Get data from the form
             lt = float(request.form['LT'])
             lb = float(request.form['LB'])
             jkt = int(request.form['JKT'])
             jkm = int(request.form['JKM'])
-            grs = int(request.form['GRS']) # GRS is '1' for Ada, '0' for Tidak Ada
+            grs = int(request.form['GRS'])
 
             # Create a DataFrame for the input features IN THE CORRECT ORDER
             input_features_df = pd.DataFrame([[lt, lb, jkt, jkm, grs]], columns=EXPECTED_FEATURE_ORDER)
-
-            # Scale the input features
-            # The scaler expects a 2D array, which a DataFrame provides
             scaled_features = scaler.transform(input_features_df)
-
-            # Make a prediction
-            # The model also expects a 2D array
             predicted_price = model.predict(scaled_features)
-
-            # Format the prediction for display
-            # The output 'predicted_price[0]' is a NumPy array with one element
             prediction_text = f"Prediksi Harga Rumah: Rp {predicted_price[0]:,.2f}"
+
+            # --- Prepare calculation details ---
+            intercept = model.intercept_
+            coefficients = model.coef_
+            
+            calculation_details = {
+                'intercept': round(intercept, 2),
+                'features': [],
+                'calculated_prediction': 0 # To sum up and verify
+            }
+            
+            current_calculation_sum = intercept
+
+            for i, feature_name in enumerate(EXPECTED_FEATURE_ORDER):
+                raw_value = input_features_df.iloc[0, i]
+                scaled_value = scaled_features[0, i]
+                coefficient = coefficients[i]
+                contribution = scaled_value * coefficient
+                current_calculation_sum += contribution
+                
+                calculation_details['features'].append({
+                    'name': feature_name,
+                    'raw_value': raw_value,
+                    'scaled_value': round(scaled_value, 4),
+                    'coefficient': round(coefficient, 4),
+                    'contribution': round(contribution, 2)
+                })
+            
+            calculation_details['calculated_prediction'] = round(current_calculation_sum, 2)
+            # Ensure the manually calculated prediction matches the model's output (for debugging)
+            # print(f"Model prediction: {predicted_price[0]}, Manual calculation: {current_calculation_sum}")
 
         except ValueError:
             prediction_text = "Error: Please enter valid numbers for all features."
         except Exception as e:
             prediction_text = f"An error occurred during prediction: {e}"
+            # Ensure calculation_details is reset or not shown if an error occurs before it's populated
+            calculation_details = None
 
-    return render_template('index.html', prediction_text=prediction_text)
+
+    return render_template('index.html', prediction_text=prediction_text, calculation_details=calculation_details)
 
 if __name__ == '__main__':
-    # Optional: Print a startup message indicating paths being used (can be removed for production)
     print(f"Flask app starting. Expecting model at: {model_path}")
     print(f"Expecting scaler at: {scaler_path}")
-    app.run(debug=True) # debug=True is for development, set to False for production
+    app.run(debug=True)
